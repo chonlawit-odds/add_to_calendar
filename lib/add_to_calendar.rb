@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "add_to_calendar/version"
 
 # erb util needed for url_encode method
