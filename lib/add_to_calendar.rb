@@ -40,14 +40,14 @@ module AddToCalendar
       params[:details] = url_encode(description) if description
       if add_url_to_description && url
         if params[:details]
-          params[:details] << url_encode("\n\n#{url}")
+          params[:details] = params[:details].dup().concat(url_encode("\n\n#{url}"))
         else
-          params[:details] = url_encode(url)
+          params[:details] = params[:details].dup().concat(url_encode(url))
         end
       end
   
       params.each do |key, value|
-        calendar_url << "&#{key}=#{value}"
+        calendar_url = calendar_url.dup().concat("&#{key}=#{value}")
       end
   
       return calendar_url
@@ -79,7 +79,7 @@ module AddToCalendar
       params[:desc] = url_encode(description) if description
       if add_url_to_description && url
         if params[:desc]
-          params[:desc] << url_encode("\n\n#{url}")
+          params[:desc] = params[:desc].dup().concat(url_encode("\n\n#{url}"))
         else
           params[:desc] = url_encode(url)
         end
@@ -87,7 +87,7 @@ module AddToCalendar
       params[:in_loc] = url_encode(location) if location
 
       params.each do |key, value|
-        calendar_url << "&#{yahoo_param(key)}=#{value}"
+        calendar_url = calendar_url.dup().concat("&#{yahoo_param(key)}=#{value}")
       end
   
       return calendar_url
@@ -122,7 +122,7 @@ module AddToCalendar
       params[:DESCRIPTION] = url_encode_hey(description) if description
       if add_url_to_description && url
         if params[:DESCRIPTION]
-          params[:DESCRIPTION] << "\n\n#{url_encode(url)}"
+          params[:DESCRIPTION] = params[:DESCRIPTION].dup().concat("\n\n#{url_encode(url)}")
         else
           params[:DESCRIPTION] = url_encode(url)
         end
@@ -135,13 +135,13 @@ module AddToCalendar
       new_line = "%0A"
       params.each do |key, value|
         if key == :ORGANIZER
-          calendar_url << "#{new_line}#{key}%3B#{value}"
+          calendar_url = calendar_url.dup().concat("#{new_line}#{key}%3B#{value}")
         else
-          calendar_url << "#{new_line}#{key}%3A#{value}"
+          calendar_url = calendar_url.dup().concat("#{new_line}#{key}%3A#{value}")
         end
       end
   
-      calendar_url << "%0AEND%3AVEVENT%0AEND%3AVCALENDAR"
+      calendar_url = calendar_url.dup().concat("%0AEND%3AVEVENT%0AEND%3AVCALENDAR")
     
       return calendar_url
     end
@@ -187,7 +187,7 @@ module AddToCalendar
       params[:DESCRIPTION] = url_encode_ical(description) if description
       if add_url_to_description && url
         if params[:DESCRIPTION]
-          params[:DESCRIPTION] << "\\n\\n#{url_encode(url)}"
+          params[:DESCRIPTION] = params[:DESCRIPTION].dup().concat("\\n\\n#{url_encode(url)}")
         else
           params[:DESCRIPTION] = url_encode(url)
         end
@@ -199,13 +199,13 @@ module AddToCalendar
       new_line = "%0A"
       params.each do |key, value|
         if key == :ORGANIZER
-          calendar_url << "#{new_line}#{key};#{value}"
+          calendar_url = calendar_url.dup().concat("#{new_line}#{key};#{value}")
         else
-          calendar_url << "#{new_line}#{key}:#{value}"
+          calendar_url = calendar_url.dup().concat("#{new_line}#{key}:#{value}")
         end
       end
 
-      calendar_url << "%0AEND:VEVENT%0AEND:VCALENDAR"
+      calendar_url = calendar_url.dup().concat("%0AEND:VEVENT%0AEND:VCALENDAR")
 
       return calendar_url
     end
@@ -281,7 +281,7 @@ module AddToCalendar
         params[:body] = url_encode(newlines_to_html_br(description)) if description
         if add_url_to_description && url
           if params[:body]
-            params[:body] << url_encode(newlines_to_html_br("\n\n#{url}"))
+            params[:body] = params[:body].dup().concat(url_encode(newlines_to_html_br("\n\n#{url}")))
           else
             params[:body] = url_encode(url)
           end
@@ -289,7 +289,7 @@ module AddToCalendar
         params[:location] = url_encode(location) if location
   
         params.each do |key, value|
-          calendar_url << "&#{key}=#{value}"
+          calendar_url = calendar_url.dup().concat("&#{key}=#{value}")
         end
     
         return calendar_url
